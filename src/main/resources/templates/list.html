@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>ToDo List Management</h1>
+    <div class="form-container">
+        <!-- Add Task Form -->
+        <form action="#" th:action="@{/list/addTask}" method="post" class="task-form">
+            <h2>Add Task</h2>
+            <p>Please fill in the details below to add a new task.</p>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" placeholder="Enter task title" required>
+            <br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Enter task description" required></textarea>
+            <br>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <br>
+            <input type="submit" value="Add Task">
+        </form>
+
+        <!-- Delete Task Form -->
+        <form action="#" th:action="@{/list/deleteTask}" method="post" class="task-form">
+            <h2>Delete Task</h2>
+            <p>To delete a task, please enter the Task ID.</p>
+            <label for="delete-id">Task ID:</label>
+            <input type="number" id="delete-id" name="id" min="1" placeholder="Enter task ID" required>
+            <br>
+            <input type="submit" value="Delete Task">
+        </form>
+
+        <!-- Edit Task Form -->
+        <form action="#" th:action="@{/list/editTask}" method="post" class="task-form">
+            <h2>Edit Task</h2>
+            <p>To edit a task, please enter the Task ID and the new details.</p>
+            <label for="edit-id">Task ID:</label>
+            <input type="number" id="edit-id" name="id" min="1" placeholder="Enter task ID" required>
+            <br>
+            <label for="edit-title">Title:</label>
+            <input type="text" id="edit-title" name="title" placeholder="Enter new title" >
+            <br>
+            <label for="edit-description">Description:</label>
+            <textarea id="edit-description" name="description" placeholder="Enter new description" ></textarea>
+            <br>
+            <label for="edit-date">Дата:</label>
+            <input type="date" id="edit-date" name="date">
+            <br>
+            <label for="edit-isDone">Is Done:</label>
+            <input type="checkbox" id="edit-isDone" name="isDone">
+            <br>
+            <input type="submit" value="Edit Task">
+        </form>
+    </div>
+</header>
+
+<h1>ToDo List</h1>
+<table class="styled-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>isDone</th>
+        <th>Mark as Done</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${toDoList}" th:class="${task.isDone} ? 'done' : 'not-done'">
+        <td th:text="${task.ID}">ID</td>
+        <td th:text="${task.title}">Title</td>
+        <td th:text="${task.description}">Description</td>
+        <td th:text="${task.date}">Date</td>
+        <td th:text="${task.isDone}">isDone</td>
+        <td>
+            <form action="#" th:action="@{/list/markDone/{id}(id=${task.ID})}" method="post">
+                <input type="checkbox" name="isDone" th:checked="${task.isDone}" onchange="this.form.submit()">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
